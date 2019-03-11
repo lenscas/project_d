@@ -35,5 +35,3 @@ app.listen(server.port, () => {
     // Success callback
     console.log(`Listening at http://localhost:${server.port}/`);
 });
-
-// test
