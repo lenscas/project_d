@@ -4,6 +4,7 @@ import express from "express"
 import dbWrapper from "./wrappers/db"
 
 import {WelcomeController} from "./controllers/welcome"
+import {SettingsController} from "./controllers/settings"
 
 const connection =  mysql.createPool({
     host: db.host,
@@ -31,6 +32,7 @@ app.use(async function(_,res,next){
 
 })
 app.use("/welcome",WelcomeController);
+app.use("/settings",SettingsController);
 app.listen(server.port, () => {
     // Success callback
     console.log(`Listening at http://localhost:${server.port}/`);
