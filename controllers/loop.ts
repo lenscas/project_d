@@ -18,7 +18,8 @@ class mpcPlayer implements Thing {
 		this.isDone = false
 		this.commandsToRun = [ () => this.mpc.playbackOptions.setVolume(35) ]
 		this.mpc.connectTCP(mpdServer.ip, mpdServer.port).then(() => { 
-			this.isDone = true; this.commandsToRun.forEach(v => v()) 
+			this.isDone = true
+			this.commandsToRun.forEach( v => v() ) 
 		})
 
 		this.name = name
@@ -48,10 +49,11 @@ class mpcPlayer implements Thing {
 
 	}
 }
-	const router: Router = Router();
-	router.get('/', easyErrors(async (_, res) => {
-	let player = new mpcPlayer("mpcPlayer1", 0);
-	player.switchOn();
-	res.send("");
-	}));
+
+const router: Router = Router();
+router.get('/', easyErrors(async (_, res) => {
+let player = new mpcPlayer("mpcPlayer1", 0);
+player.switchOn();
+res.send("");
+}));
 export const LoopController: Router = router;
