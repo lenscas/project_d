@@ -2,6 +2,7 @@ import { Router } from "express";
 import easyErrors from "../wrappers/funcs";
 import { mpdServer } from "../config";
 import { MPC } from 'mpc-js';
+import Thing from '../wrappers/things';
 
 class mpcPlayer implements Thing {
 

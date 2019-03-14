@@ -1,4 +1,4 @@
-interface Thing {
+export default interface Thing {
     name : string
     on : boolean
     actionIndex : number
