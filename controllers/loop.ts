@@ -69,8 +69,8 @@ class mpcPlayer implements Thing {
 
 const router: Router = Router();
 router.get('/', easyErrors(async (_, res) => {
-let player = new mpcPlayer("mpcPlayer1", 0);
-player.switchOn();
-res.send("");
+	let player = new mpcPlayer("mpcPlayer1", 0);
+	player.switchOn();
+	res.send("");
 }));
 export const LoopController: Router = router;
