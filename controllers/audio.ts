@@ -14,7 +14,7 @@ router.put('/volume', easyErrors(async (req, res) => {
     if (req.body.volume || req.body.volume === 0) {
         player.setVol(req.body.volume)
     }
-    res.send("");
+    res.send({ volume : player.getVol() });
 }));
 
 export const AudioController: Router = router;
