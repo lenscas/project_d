@@ -3,6 +3,7 @@ import easyErrors from "../wrappers/funcs";
 import { mpdServer } from "../config";
 import { MPC } from 'mpc-js';
 import Thing from '../wrappers/things';
+import readDir from 'fs';
 
 export default class mpcPlayer implements Thing {
 
@@ -55,6 +56,14 @@ export default class mpcPlayer implements Thing {
 
     public getVol() {
         return this.volume;
+    }
+
+    public newPlaylist(playlist: string[], playlistName: string) {
+        this.mpc.currentPlaylist.clear;
+        playlist.forEach(track => {
+            this.mpc.currentPlaylist.add(track)
+        });
+        this.mpc.storedPlaylists.save(playlistName)
     }
 
 	public setAction(actionIndex: number) {

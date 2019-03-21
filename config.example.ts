@@ -9,5 +9,6 @@ export const server = {
 }
 export const mpdServer = {
     port : 6600,
-    ip : "192.168.56.11"
+    ip : "192.168.56.11",
+    musicDir : "~/Music"
 }
