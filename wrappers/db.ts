@@ -20,7 +20,7 @@ export default class {
 		}
 
 	}
-	private _query = async <T={ [value : string] : unknown }> (data : QueryOptions) : Promise<T|boolean> =>  {
+	private _query = async <T=[queryResult]> (data : QueryOptions) : Promise<T|false> =>  {
 		if(this.inTransaction && this.failedAQuery){
 			return false;
 		}
@@ -62,8 +62,25 @@ export default class {
 	public setAutoTransactionStatus = (status:boolean) => {
 		this.failedAQuery = status
 	}
-	public query = async (data :QueryOptions) => {
-		return await this._query(data);
+	public query = async <T=queryResult> (data :QueryOptions) => {
+		return await this._query<T>(data);
+	}
+	public find = async <T=queryResult>(data : findData) : Promise<T|false> => {
+		const query : QueryOptions = {
+			sql : "SELECT * FROM ?? WHERE ?? = ? LIMIT 1",
+			values : [
+				data.table,
+				data.name,
+				data.value
+			]
+		}
+		let res = await this.query<[T]>(query);
+		if(res){
+			if(res.length  > 0) {
+				return res[0]
+			}
+		}
+		return false
 	}
 	simpleInsert = async(data :insertData )=>{
 
@@ -87,6 +104,7 @@ export default class {
 			this.connection = undefined;
 		}
 	}
+	
 }
 export type insertData = {
 	table : string,
@@ -94,3 +112,9 @@ export type insertData = {
 		[name : string] : string
 	}
 }
+export type findData = {
+	table:string,
+	name : string,
+	value : string
+}
+export type queryResult = { [value : string] : unknown }

@@ -21,10 +21,16 @@ export default class mpcPlayer implements Thing {
 		this.isDone = false
 		this.volume = 35
 		this.commandsToRun = [ () => this.mpc.playbackOptions.setVolume(this.volume) ]
-		this.mpc.connectTCP(mpdServer.ip, mpdServer.port).then(() => { 
-			this.isDone = true
-			this.commandsToRun.forEach( v => v() ) 
-		})
+		this.mpc.connectTCP(mpdServer.ip, mpdServer.port)
+			.then(() => { 
+				this.isDone = true
+				this.commandsToRun.forEach( v => v() ) 
+			})
+			.catch((e)=>{
+				//better error handling needed?
+				//maybe try to restart mpd (which needs root access......)
+				console.error(e)
+			})
 
 		this.name = name
 		this.actionIndex = actionIndex
