@@ -16,5 +16,8 @@ router.put('/volume', easyErrors(async (req, res) => {
     }
     res.send({ volume : player.getVol() });
 }));
-
+router.get("/playlist",easyErrors(async(_,res) => {
+    let playlist =  await player.getList()
+    res.send(playlist)
+}))
 export const AudioController: Router = router;
