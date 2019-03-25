@@ -20,13 +20,13 @@ router.put('/volume', easyErrors(async (req, res) => {
 }));
 
 router.put('/upload', easyErrors(async (req, res) => {
-    if(req.files){
+    if(req.files && req.files.audioTrack){
        if ("name" in req.files.audioTrack){
            req.files.audioTrack = [req.files.audioTrack]
        }
-       req.files.audioTrack.forEach(track => track.mv(mpdServer.musicDir))
+       req.files.audioTrack.forEach(track => track.mv(mpdServer.musicDir + "/" + track.name))
     }
-    res.send("Track uploaded successfully")
+    res.send("Track maybe uploaded successfully")
 }))
 
 export const AudioController: Router = router;
