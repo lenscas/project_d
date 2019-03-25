@@ -1,9 +1,6 @@
-import { Router } from "express";
-import easyErrors from "../wrappers/funcs";
 import { mpdServer } from "../config";
 import { MPC } from 'mpc-js';
 import Thing from '../wrappers/things';
-import readDir from 'fs';
 
 export default class mpcPlayer implements Thing {
 
@@ -77,11 +74,5 @@ export default class mpcPlayer implements Thing {
 	}
 }
 
-const router: Router = Router();
-router.get('/', easyErrors(async (_, res) => {
 let player = new mpcPlayer("mpcPlayer1", 0);
 player.switchOn();
-res.send("");
-}));
-router.put('/',)
-export const LoopController: Router = router;

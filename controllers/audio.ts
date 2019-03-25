@@ -1,6 +1,8 @@
 import { Router } from "express";
 import easyErrors from "../wrappers/funcs";
 import mpcPlayer from "../things/mpcPLayer"
+import { mpdServer } from './../config';
+
 
 const router: Router = Router();
 let player = new mpcPlayer("mpcPlayer1", 0);
@@ -16,5 +18,15 @@ router.put('/volume', easyErrors(async (req, res) => {
     }
     res.send({ volume : player.getVol() });
 }));
+
+router.put('/upload', easyErrors(async (req, res) => {
+    if(req.files){
+       if ("name" in req.files.audioTrack){
+           req.files.audioTrack = [req.files.audioTrack]
+       }
+       req.files.audioTrack.forEach(track => track.mv(mpdServer.musicDir))
+    }
+    res.send("Track uploaded successfully")
+}))
 
 export const AudioController: Router = router;

@@ -2,11 +2,12 @@ import {db,server} from "./config"
 import * as mysql from 'promise-mysql'
 import express from "express"
 import dbWrapper from "./wrappers/db"
+import fileUpload from "express-fileupload"
 
 var bodyParser = require('body-parser')
 
-import {WelcomeController} from "./controllers/welcome"
-import {SettingsController} from "./controllers/settings"
+import { WelcomeController } from "./controllers/welcome"
+import { SettingsController } from "./controllers/settings"
 import { LoopController } from "./controllers/loop";
 import { AudioController } from "./controllers/audio";
 
@@ -22,6 +23,13 @@ const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+app.use(fileUpload({
+	useTempFiles : true,
+	tempFileDir : "/tmp/",
+	safeFileNames: true,
+	preserveExtension: true,
+	
+}))
 
 app.use(async function(_,res,next){
 	res.on("close",()=>{
