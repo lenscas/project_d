@@ -2,6 +2,7 @@ import {db,server} from "./config"
 import * as mysql from 'promise-mysql'
 import express from "express"
 import dbWrapper from "./wrappers/db"
+import cors from "cors"
 
 var bodyParser = require('body-parser')
 
@@ -20,6 +21,7 @@ const connection =  mysql.createPool({
 
 const app = express();
 
+app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
