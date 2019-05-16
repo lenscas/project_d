@@ -21,7 +21,8 @@ router.put('/volume', easyErrors(async (req, res) => {
     res.send({ volume : player.getVol() });
 }));
 
-router.put('/upload', easyErrors(async (req, res) => {
+router.put('/upload', easyErrors((req, res) => {
+    return new Promise(async (resolve)=>{
     if(req.files && req.files.audioTrack){
        if ("name" in req.files.audioTrack){
            req.files.audioTrack = [req.files.audioTrack]
@@ -45,6 +46,7 @@ router.put('/upload', easyErrors(async (req, res) => {
            else{
                res.send("Upload failed :(")
            }
+           resolve()
        }
        req.files.audioTrack.forEach(async track => {
         try{   
@@ -56,7 +58,7 @@ router.put('/upload', easyErrors(async (req, res) => {
         }
         after()
        })
-    }
+    }})
     
 }))
 
