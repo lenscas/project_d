@@ -70,7 +70,15 @@ export default class mpcPlayer implements Thing {
     }
 
 	public setAction(actionIndex: number) {
+		
+	}
 
+	public updateDB(fun : ()=>void) {
+		this.run(()=>{ this.mpc.database.update();fun() })
+	}
+
+	public addToPlaylist(URI: string) {
+		this.run(()=>{ this.mpc.currentPlaylist.add(URI)})
 	}
 }
 
