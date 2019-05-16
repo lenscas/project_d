@@ -78,7 +78,7 @@ export default class mpcPlayer implements Thing {
 	}
 
 	public addToPlaylist(URI: string) {
-		this.run(()=>{ this.mpc.currentPlaylist.add(URI)})
+		this.run(()=>{ this.mpc.currentPlaylist.add(URI).catch((e)=>console.error(e))})
 	}
 }
 
