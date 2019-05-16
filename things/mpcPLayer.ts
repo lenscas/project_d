@@ -78,7 +78,10 @@ export default class mpcPlayer implements Thing {
 	}
 
 	public addToPlaylist(URI: string) {
-		this.run(()=>{ this.mpc.currentPlaylist.add(URI).catch((e)=>console.error(e))})
+		
+		let n = URI.lastIndexOf(".");
+    	let cutURI = URI.substring(0, n);
+		this.run( ()=>{ this.mpc.currentPlaylist.add(cutURI).catch((e)=>console.error(e)) } )
 	}
 }
 
