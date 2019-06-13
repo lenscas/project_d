@@ -79,9 +79,18 @@ export default class mpcPlayer implements Thing {
 
 	public addToPlaylist(URI: string) {
 		
-		let n = URI.lastIndexOf(".");
-    	let cutURI = URI.substring(0, n);
-		this.run( ()=>{ this.mpc.currentPlaylist.add(cutURI).catch((e)=>console.error(e)) } )
+		// let n = URI.lastIndexOf(".");
+    	// let cutURI = URI.substring(0, n);
+		// this.run( ()=>{ this.mpc.currentPlaylist.add(cutURI).catch((e)=>console.error(e)) } )
+		console.log(URI)
+		let sys = require("sys")
+		let exec = require("child_process").exec
+		let child
+		child = exec("mpc update --wait && mpc add " + URI ,function (error: any, stdout: any, stderr: any){
+		console.log(stdout)
+		console.error(stderr)
+		})
+
 	}
 }
 

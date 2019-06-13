@@ -50,10 +50,12 @@ router.put('/upload', easyErrors((req, res) => {
        }
        req.files.audioTrack.forEach(async track => {
         try{   
+            console.log(track.name)
             await track.mv(mpdServer.musicDir + "/" + track.name)
             results.push({path : track.name, success : true})
         }
         catch(e){
+            console.error(e)
             results.push({path : track.name, success : false})
         }
         after()

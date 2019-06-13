@@ -34,8 +34,9 @@ app.use(fileUpload({
 app.use(async function(_,res,next){
 	res.on("close",()=>{
 		res.locals.connection.release()
-		if(!res.headersSent) {
-			res.end({error:"There was an unknown problem."})
+		if(!res.headersSent){
+			res.send({error:"There was an unknown problem."})
+			res.end()
 		}
 	})
 	try {
