@@ -2,12 +2,13 @@ import {db,server} from "./config"
 import * as mysql from 'promise-mysql'
 import express from "express"
 import dbWrapper from "./wrappers/db"
+import fileUpload from "express-fileupload"
 import cors from "cors"
 
 var bodyParser = require('body-parser')
 
-import {WelcomeController} from "./controllers/welcome"
-import {SettingsController} from "./controllers/settings"
+import { WelcomeController } from "./controllers/welcome"
+import { SettingsController } from "./controllers/settings"
 import { LoopController } from "./controllers/loop";
 import { AudioController } from "./controllers/audio";
 
@@ -24,12 +25,20 @@ const app = express();
 app.use(cors({credentials: true, origin: true}))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+app.use(fileUpload({
+	useTempFiles : true,
+	tempFileDir : "/tmp/",
+	safeFileNames: true,
+	preserveExtension: true,
+	
+}))
 
 app.use(async function(_,res,next){
 	res.on("close",()=>{
 		res.locals.connection.release()
-		if(!res.headersSent) {
-			res.end({error:"There was an unknown problem."})
+		if(!res.headersSent){
+			res.send({error:"There was an unknown problem."})
+			res.end()
 		}
 	})
 	try {
