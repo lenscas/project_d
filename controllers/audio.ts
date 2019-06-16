@@ -64,4 +64,8 @@ router.put('/upload', easyErrors((req, res) => {
     
 }))
 
+router.get("/playlist",easyErrors(async(_,res) => {
+    let playlist =  await player.getList()
+    res.send(playlist)
+}))
 export const AudioController: Router = router;

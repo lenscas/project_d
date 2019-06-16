@@ -56,4 +56,31 @@ router.get('/', easyErrors(async (_, res,con) => {
 	}
 	
 }));
+router.post('/', easyErrors(async (req, res,con) => {
+	if(req.body.time){
+		if(await con.find({
+			table : "config",
+			name : "name",
+			value : "start"
+		})) {
+			await con.query({
+				sql : "UPDATE config SET value=? WHERE name='start'",
+				values : [req.body.time]
+			})
+		} else {
+			await con.simpleInsert({
+				table : "config",
+				values : {
+					name : "start",
+					value : req.body.time
+				}
+			})
+		}
+		res.send(true)
+	} else {
+		res.send(false)
+	}
+	
+	
+}));
 export const LoopController: Router = router;

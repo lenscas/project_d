@@ -2,6 +2,9 @@ import { mpdServer } from "../config";
 import { MPC } from 'mpc-js';
 import Thing from '../wrappers/things';
 
+import {exec} from "child_process";
+import { resolve, reject } from "bluebird";
+
 export default class mpcPlayer implements Thing {
 
 	mpc: MPC
@@ -69,6 +72,19 @@ export default class mpcPlayer implements Thing {
         this.mpc.storedPlaylists.save(playlistName)
     }
 
+	public getList() {
+		return new Promise( (resolve,reject) => {
+			this.run(async ()=>{
+				resolve(
+					{
+						currentSong: await this.mpc.status.currentSong(),
+						list : await this.mpc.currentPlaylist.playlistInfo()
+					}
+				)
+			})
+		})
+		
+	}
 	public setAction(actionIndex: number) {
 		
 	}
