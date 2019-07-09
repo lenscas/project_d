@@ -44,22 +44,35 @@ export default class light implements Thing {
 		} else {
 			this.commandsToRun.push(func)
 		}
-	}
+    }
 	public switchOn() {
 		
 		this.on = true;
-		
-		this.run(() => {
-			
-	})
-}
+	}
 
 	public switchOff() {
 		this.on = false;
-		// this.run(() => { this.mpc.playback.stop() })
 	}
 
 	public setAction(actionIndex: number) {
-		
+        this.run(
+            async ()=>{
+                let bb = await this.light.sendCommands(
+                    mi.rgbw.on(1),
+                )
+                console.log(bb)
+                let r = 10;
+                let b = 10;
+                let g = 10;
+                var progress = r;
+                progress += 1; // of course you can increment faster
+                r = progress;
+                g = 255 - (255 * (Math.abs(progress-127)/128))
+                b = 255 - progress;
+                console.log(r,g,b);
+                this.light.sendCommands(mi.commands.rgbw.hue(1,20))
+            }
+        )
 	}
+
 }
