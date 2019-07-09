@@ -12,6 +12,9 @@ import { SettingsController } from "./controllers/settings"
 import { LoopController } from "./controllers/loop";
 import { AudioController } from "./controllers/audio";
 
+import light from "./things/light";
+
+const lamp = new light("a", 1)
 
 const connection =  mysql.createPool({
     host: db.host,
