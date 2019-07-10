@@ -5,10 +5,10 @@ import connection from "../wrappers/db";
 
 const router: Router = Router();
 
-var CronJob = require('cron').CronJob;
-new CronJob('*/1 * * * *', function() {
-  console.log('You will see this message every one minute');
-}, null, true, 'Europe/Amsterdam');
+// var CronJob = require('cron').CronJob;
+// new CronJob('*/1 * * * *', function() {
+//   console.log('You will see this message every one minute');
+// }, null, true, 'Europe/Amsterdam');
 
 router.get('/', easyErrors(async (_, res) => {
 	let player = new mpcPlayer("mpcPlayer1", 0);

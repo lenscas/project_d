@@ -3,19 +3,21 @@ import { mpdServer } from "../config";
 import * as mi from 'node-milight-promise';
 import Thing from '../wrappers/things';
 
+
 export default class light implements Thing {
 
-	light: mi
+	light: any
 	zone: number
+	miCommands: any
 	isDone: boolean
 	name: string
 	on: boolean
 	actionIndex: number
 	commandsToRun: Array<() => void>
 
-	public constructor(name: string, actionIndex: number) {
+	public constructor(name: string, actionIndex: number, zone: number) {
 
-		this.zone = 1;
+		this.zone = zone;
 		this.isDone = false
 		this.commandsToRun = [ ]
 		mi.discoverBridges({
@@ -33,6 +35,7 @@ export default class light implements Thing {
 		this.name = name
 		this.actionIndex = actionIndex
 		this.on = false
+		this.miCommands = mi.commandsV6
 
 	}
 	private run(func: () => void) {
@@ -43,10 +46,13 @@ export default class light implements Thing {
 		}
 	}
 	public switchOn() {
+		
 		this.on = true;
-		// this.run(() => { this.mpc.playback.play() })
-
-	}
+		
+		this.run(() => {
+			
+	})
+}
 
 	public switchOff() {
 		this.on = false;
@@ -57,6 +63,3 @@ export default class light implements Thing {
 		
 	}
 }
-
-let lamp = new light("light1", 0);
-lamp.switchOn();
