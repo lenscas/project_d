@@ -101,14 +101,19 @@ const getTime = async (con: dbWrapper,kind:string )=>{
 	time.setFullYear(now.getFullYear(),now.getMonth(),now.getDate())
 	return time;
 }
-const isCloseEnough = (now: Date, mustBe:Date) : boolean => {
+const isCloseEnough = (now: Date, mustBe:Date) => {
 	let isEarlier = mustBe <= now
 	if(isEarlier){
 		console.log(now)
 		now.setSeconds(now.getSeconds() - 2);
-		
+		const isFirst = mustBe >=now;
+		now.setHours(now.getHours()-1);
+		const isInHours = mustBe >=now;
 		console.log(mustBe)
-		return mustBe >= now;
+		return {
+			isFirst : isFirst,
+			isInHours : isInHours
+		}
 	}
 	return false
 }
@@ -116,12 +121,18 @@ setInterval(async ()=>{
 	const con = new dbWrapper(connection);
 	let start = await getTime(con,"start")
 	const now = new Date()
-	let light = new Light("light",0,0);
-	light.setAction(1);
-
-	if(isCloseEnough(now,start) ) {
-		let player = new mpcPlayer("mpcPlayer1", 0);
-		player.switchOn();
+	const res = isCloseEnough(now,start) 
+	const res = {
+		isFirst : false,
+		isInHours : true
 	}
-}, 2000)
+	if(res) {
+		if(res.isFirst){
+			let player = new mpcPlayer("mpcPlayer1", 0);
+			player.switchOn();
+		}
+		let light = new Light("light",0,0);
+		light.setAction(1);
+	}
+}, 6000)
 
