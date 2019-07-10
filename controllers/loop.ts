@@ -2,14 +2,9 @@ import { Router } from "express";
 import easyErrors from "../wrappers/funcs";
 import mpcPlayer from "../things/mpcPLayer"
 import connection from "../wrappers/db";
+import Light from "../things/light";
 
 const router: Router = Router();
-router.get('/', easyErrors(async (_, res) => {
-	let player = new mpcPlayer("mpcPlayer1", 0);
-	player.newPlaylist(["Dream Catcher.mp3"], "Dream Catcher")
-	player.switchOn();
-	res.send("");
-}))
 const insertTime = async(con:connection, kind:string)=>{
 	let curTime = new Date().getTime()
 	await con.simpleInsert(
@@ -47,13 +42,19 @@ const isCloseEnough = (now: Date, mustBe:Date) : boolean => {
 	return false
 }
 router.get('/', easyErrors(async (_, res,con) => {
+	console.log("test?")
 	let start = await getTime(con,"start")
 	const now = new Date()
+	console.log("??")
+	let light = new Light("light",0,0);
+	light.setAction(1);
+
 	if(isCloseEnough(now,start) ) {
 		let player = new mpcPlayer("mpcPlayer1", 0);
 		player.switchOn();
 		res.send("");
 	}
+	res.send("test")
 	
 }));
 router.post('/', easyErrors(async (req, res,con) => {
