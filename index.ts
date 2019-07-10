@@ -10,6 +10,7 @@ import {WelcomeController} from "./controllers/welcome"
 import {SettingsController} from "./controllers/settings"
 import { LoopController } from "./controllers/loop";
 import { AudioController } from "./controllers/audio";
+import { IpAdressController } from "./controllers/ip-address";
 
 
 const connection =  mysql.createPool({
@@ -50,6 +51,8 @@ app.use("/settings",SettingsController);
 app.use("/loop",LoopController);
 
 app.use("/audio",AudioController);
+
+app.use("/ipaddress",IpAdressController);
 
 app.listen(server.port, () => {
     // Success callback
