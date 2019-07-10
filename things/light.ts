@@ -1,4 +1,3 @@
-import { mpdServer } from "../config";
 //@ts-ignore
 import * as mi from 'node-milight-promise';
 import Thing from '../wrappers/things';
