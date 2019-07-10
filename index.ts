@@ -122,10 +122,6 @@ setInterval(async ()=>{
 	let start = await getTime(con,"start")
 	const now = new Date()
 	const res = isCloseEnough(now,start) 
-	const res = {
-		isFirst : false,
-		isInHours : true
-	}
 	if(res) {
 		if(res.isFirst){
 			let player = new mpcPlayer("mpcPlayer1", 0);
