@@ -17,21 +17,10 @@ export default class light implements Thing {
 
 	public constructor(name: string, actionIndex: number, zone: number) {
 
-		this.zone = zone;
-		this.isDone = false
+		this.zone = 1;
+		this.isDone = true
 		this.commandsToRun = [ ]
-		mi.discoverBridges({
-			address: '10.10.100.255',
-			type: 'all'
-		}).then((results:any) => {
-			console.log(results)
-			this.light = new mi.MilightController({
-				ip: results[0].ip,
-				type: results[0].type
-			  })
-			  this.commandsToRun.forEach( v => v() )
-		})
-
+    
 		this.name = name
 		this.actionIndex = actionIndex
 		this.on = false
@@ -39,38 +28,69 @@ export default class light implements Thing {
 
 	}
 	private run(func: () => void) {
-		if (this.isDone) {
+		//if (this.isDone) {
 			func()
-		} else {
-			this.commandsToRun.push(func)
-		}
+		//} else {
+			//this.commandsToRun.push(func)
+		//}
     }
-	public switchOn() {
-		
-		this.on = true;
-	}
+	  public switchOn() {
+		  this.on = true;
+	  }
 
-	public switchOff() {
-		this.on = false;
-	}
-
-	public setAction(actionIndex: number) {
+	  public switchOff() {
+		  this.on = false;
+	  }
+	  public setAction(actionIndex: number) {
         this.run(
             async ()=>{
-                let bb = await this.light.sendCommands(
-                    mi.rgbw.on(1),
-                )
-                console.log(bb)
-                let r = 10;
-                let b = 10;
-                let g = 10;
-                var progress = r;
-                progress += 1; // of course you can increment faster
-                r = progress;
-                g = 255 - (255 * (Math.abs(progress-127)/128))
-                b = 255 - progress;
-                console.log(r,g,b);
-                this.light.sendCommands(mi.commands.rgbw.hue(1,20))
+              const http = require("../wrappers/http").init()
+              http.put({
+                data : {},
+                url : "zones",
+                callBack : (v:any)=>{
+                    const element = v.data[0]
+                    console.log(element)
+                    if(element.mode=="off"){
+                      return
+                    }
+                    let data : {[key : string] : any} = {}
+                    let newTemp = element.state.temperature - 9;
+                    newTemp = newTemp < 0 ? 0 : newTemp;
+                    if(element.mode == "white") {
+                      data.data = {"mode":"white","state":{"temperature":newTemp}}
+                    } else {
+                      let as360 = element.state.hue / 255*360;
+                      if(as360 > 240){
+                        as360 += 20;
+                        if(as360 >= 360) {
+                          as360 = 0
+                        }
+                      } else {
+                        as360 -= 20;
+                        if(as360 <=0){
+                          as360 = 0
+                        }
+                      }
+                      element.state.hue = Math.round(as360 / 360 *255)
+                      data.data = {"mode": "color", "state":element.state}
+                    }
+                    data.url = "zones/"
+                    console.log(data)
+                    data.callBack =(v : any) =>console.log(v)
+                    console.log("right before doing it")
+                    http.put(data)
+                  }
+                })
+              /*
+              http.put(
+                {
+                  data : {"mode":"color","state":{"hue":100}},
+                  url : "zones",
+                  callBack : (v:any)=>console.debug(v.data[0].state)
+                }
+              )
+              */
             }
         )
 	}
