@@ -53,6 +53,7 @@ router.get('/', easyErrors(async (_, res,con) => {
 		let player = new mpcPlayer("mpcPlayer1", 0);
 		player.switchOn();
 		res.send("");
+		light.setAction(1);
 	}
 	res.send("test")
 	
