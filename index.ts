@@ -98,7 +98,7 @@ const isCloseEnough = (now: Date, mustBe:Date) : boolean => {
 	let isEarlier = mustBe <= now
 	if(isEarlier){
 		console.log(now)
-		now.setMinutes(now.getMinutes() - 5);
+		now.setSeconds(now.getSeconds() - 2);
 		
 		console.log(mustBe)
 		return mustBe >= now;
@@ -116,5 +116,5 @@ setInterval(async ()=>{
 		let player = new mpcPlayer("mpcPlayer1", 0);
 		player.switchOn();
 	}
-})
+}, 2000)
 
