@@ -59,21 +59,39 @@ export default class light implements Thing {
                     newTemp = newTemp < 0 ? 0 : newTemp;
                     if(element.mode == "white") {
                       data.data = {"mode":"white","state":{"temperature":newTemp}}
-                    } else {
+                    } 
+                    else {
+                      let currHue = element.state.hue
                       let as360 = element.state.hue / 255*360;
                       if(as360 > 240){
-                        as360 += 20;
+                        as360 += 8;
                         if(as360 >= 360) {
                           as360 = 0
                         }
                       } else {
-                        as360 -= 20;
+                        as360 -= 8;
                         if(as360 <=0){
                           as360 = 0
                         }
                       }
-                      element.state.hue = Math.round(as360 / 360 *255)
+                      element.state.hue = Math.round(as360 / 360 * 255)
                       data.data = {"mode": "color", "state":element.state}
+                      if (element.state.hue === currHue && currHue != 0) {
+                        let as360 = element.state.hue / 255*360;
+                        if(as360 > 240){
+                          as360 += 16;
+                          if(as360 >= 360) {
+                            as360 = 0
+                          }
+                        } else {
+                          as360 -= 16;
+                          if(as360 <=0){
+                            as360 = 0
+                          }
+                        }
+                        element.state.hue = Math.round(as360 / 360 * 255)
+                        data.data = {"mode": "color", "state":element.state}
+                      } 
                     }
                     data.url = "zones/"
                     console.log(data)
