@@ -14,11 +14,14 @@ import { AudioController } from "./controllers/audio";
 import { IpAdressController } from "./controllers/ip-address";
 import mpcPlayer from "./things/mpcPLayer";
 import Light from "./things/light";
+import {startLampRest} from "./wrappers/funcs"
+
 /*
 
 const lamp = new light("a", 1)
 lamp.setAction(10)
 */
+let lamp = startLampRest()
 const connection =  mysql.createPool({
     host: db.host,
 	user: db.user,
@@ -49,6 +52,7 @@ app.use(async function(_,res,next){
 	})
 	try {
 		res.locals.connection = new dbWrapper(connection);
+		res.locals.lamp = lamp;
 		next()
 	} catch (e) {
 		console.error(e)

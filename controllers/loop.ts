@@ -81,7 +81,5 @@ router.post('/', easyErrors(async (req, res,con) => {
 	} else {
 		res.send(false)
 	}
-	
-	
 }));
 export const LoopController: Router = router;
