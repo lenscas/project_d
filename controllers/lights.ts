@@ -12,8 +12,10 @@ let setIP = (ip: string) => {
                 return reject(err)
             }
             let newData = data.split("\n")
+            console.log("split = " + newData)
             newData[0]="{"
             data = newData.join("\n")
+            console.log("join = " + data)
             let config = JSON.parse(data)
             config.bridge_ip = ip
             let ct = "module.exports = " + JSON.stringify(config)
